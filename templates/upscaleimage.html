@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Улучшение фотографий</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upscaleimage.css') }}">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .loader {
+            display: none;
+            margin-top: 20px;
+            border: 6px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 6px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing-message {
+            display: none;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Улучшение качества фотографий</h1>
+        <p>Этот инструмент поможет улучшить качество ваших фотографий. Загрузите изображение, и мы обработаем его с помощью современных технологий.</p>
+
+        <form action="{{ url_for('upscale_image') }}" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            <label class="upload-btn">
+                <input type="file" name="image" accept="image/*" required onchange="validateFile()" id="file-input">
+                Выберите фотографию
+            </label>
+            <button type="submit" id="submit-btn">Улучшить</button>
+        </form>
+
+        <div class="loader" id="loader"></div>
+        <p class="processing-message" id="processing-message">Ваше изображение обрабатывается. После улучшения вы будете перенаправлены на другую страницу.</p>
+        <p id="feedback" class="feedback"></p>
+    </div>
+
+    <script>
+        function validateFile() {
+            const input = document.getElementById('file-input');
+            const feedback = document.getElementById('feedback');
+            const file = input.files[0];
+
+            if (!file) {
+                feedback.textContent = "Выберите изображение.";
+                return;
+            }
+
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                feedback.textContent = "Пожалуйста, загрузите файл изображения (JPEG, PNG или GIF).";
+                input.value = ""; // Сбросить выбор
+            } else {
+                feedback.textContent = `Файл "${file.name}" выбран.`;
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('processing-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
