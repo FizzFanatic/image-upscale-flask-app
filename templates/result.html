@@ -5,25 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Результат улучшения изображения</title>
     <style>
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; font-family: Arial, sans-serif; }
-        .image-container { margin: 20px 0; text-align: center; }
-        img { max-width: 400px; border-radius: 8px; }
-        a.download-btn { display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
-        a.download-btn:hover { background-color: #45a049; }
-        .info { margin-top: 20px; text-align: center; color: #555; }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        .image-container {
+            margin: 10px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 250px;
+            border-radius: 8px;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+        .info {
+            margin-top: 10px;
+            text-align: center;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <h2>Ваше изображение успешно улучшено!</h2>
     <div class="image-container">
-        <img src="{{ image_url }}" alt="Улучшенное изображение">
+        <img id="enhancedImage" src="{{ image_url }}" alt="Улучшенное изображение">
     </div>
-    <a href="{{ image_url }}" download class="download-btn">Скачать улучшенное изображение</a>
+    <a href="{{ url_for('download_image') }}" class="download-btn">Скачать улучшенное изображение</a>
+
     <div class="info">
+        <!--
         <p>Использовано кредитов: {{ credits_used }}</p>
         <p>Осталось кредитов: {{ credits_remaining }}</p>
+        -->
         <p>ID улучшенного изображения: {{ asset_id }}</p>
     </div>
     <p>Спасибо за использование нашего сервиса!</p>
+
+    <script>
+        // Инициализация загрузки при клике на кнопку
+        document.getElementById('downloadLink').addEventListener('click', function () {
+            const imageUrl = "{{ image_url }}";
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = "улучшенное_изображение.jpg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
 </body>
 </html>
