@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат улучшения изображения</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; font-family: Arial, sans-serif; }
+        .image-container { margin: 20px 0; text-align: center; }
+        img { max-width: 400px; border-radius: 8px; }
+        a.download-btn { display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+        a.download-btn:hover { background-color: #45a049; }
+        .info { margin-top: 20px; text-align: center; color: #555; }
+    </style>
+</head>
+<body>
+    <h2>Ваше изображение успешно улучшено!</h2>
+    <div class="image-container">
+        <img src="{{ image_url }}" alt="Улучшенное изображение">
+    </div>
+    <a href="{{ image_url }}" download class="download-btn">Скачать улучшенное изображение</a>
+    <div class="info">
+        <p>Использовано кредитов: {{ credits_used }}</p>
+        <p>Осталось кредитов: {{ credits_remaining }}</p>
+        <p>ID улучшенного изображения: {{ asset_id }}</p>
+    </div>
+    <p>Спасибо за использование нашего сервиса!</p>
+</body>
+</html>
