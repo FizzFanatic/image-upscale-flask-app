@@ -59,30 +59,53 @@
     </div>
 
     <script>
-        function validateFile() {
-            const input = document.getElementById('file-input');
-            const feedback = document.getElementById('feedback');
-            const file = input.files[0];
+    function validateFile() {
+        const input = document.getElementById('file-input');
+        const feedback = document.getElementById('feedback');
+        const file = input.files[0];
 
-            if (!file) {
-                feedback.textContent = "Выберите изображение.";
-                return;
-            }
-
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validTypes.includes(file.type)) {
-                feedback.textContent = "Пожалуйста, загрузите файл изображения (JPEG, PNG или GIF).";
-                input.value = ""; // Сбросить выбор
-            } else {
-                feedback.textContent = `Файл "${file.name}" выбран.`;
-            }
+        if (!file) {
+            feedback.textContent = "Выберите изображение.";
+            return;
         }
 
-        function showLoading() {
-            document.getElementById('submit-btn').style.display = 'none';
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('processing-message').style.display = 'block';
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            feedback.textContent = "Пожалуйста, загрузите файл изображения (JPEG, PNG или GIF).";
+            input.value = ""; // Сбросить выбор
+            return;
         }
-    </script>
+
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            img.src = event.target.result;
+            img.onload = function() {
+                const width = img.width;
+                const height = img.height;
+                const totalPixels = width * height;
+
+                // Проверка размеров изображения
+                if (height < 32 || height > 1536) {
+                    feedback.textContent = "Размер изображения недопустим. Высота должна быть от 32 до 1536 пикселей.";
+                    input.value = ""; // Сбросить выбор
+                } else if (totalPixels > 1048576) {
+                    feedback.textContent = "Изображение слишком большое. Общее количество пикселей должно быть менее 1,048,576.";
+                    input.value = ""; // Сбросить выбор
+                } else {
+                    feedback.textContent = `Файл "${file.name}" выбран.`;
+                }
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showLoading() {
+        document.getElementById('submit-btn').style.display = 'none';
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('processing-message').style.display = 'block';
+    }
+</script>
+
 </body>
 </html>
