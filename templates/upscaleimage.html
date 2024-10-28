@@ -45,7 +45,7 @@
         <h1>Улучшение качества фотографий</h1>
         <p>Этот инструмент поможет улучшить качество ваших фотографий. Загрузите изображение, и мы обработаем его с помощью современных технологий.</p>
 
-        <form action="{{ url_for('upscale_image') }}" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+        <form action="{{ url_for('upscale_image_route') }}" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
             <label class="upload-btn">
                 <input type="file" name="image" accept="image/*" required onchange="validateFile()" id="file-input">
                 Выберите фотографию
